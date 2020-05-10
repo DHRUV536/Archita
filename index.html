@@ -4,15 +4,19 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, user-scalable=no">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
   <title>Weather App | codedhruv.com</title>
+
 </head>
+
 <style>
   .cnt {
     border: solid black;
@@ -49,7 +53,7 @@
     text-shadow: 0px 0px 10px white;
   }
 
-  #jmb {}
+
 
   #frm {
     text-align: center;
@@ -103,7 +107,8 @@
 
   #sbtn:hover+input,
   #txt:hover,
-  #txt:active {
+  #txt:active,
+  #txt:focus {
     transition: .4s;
     width: 200px;
     background-color: #343A40;
@@ -111,16 +116,28 @@
 
   }
 
-  .data {
-    padding: 10px;
-  }
-
   #name,
   #temp,
   #desc,
-  #icon,
   #dtl {
-    font-size: 20px
+    font-size: 20px;
+    padding-top: 10px;
+
+  }
+
+  #cross {
+    border: none;
+    background: red;
+    color: white;
+    border-radius: 5px;
+    position: relative;
+    left: 30px;
+
+  }
+
+  #cross:hover {
+    transition: .5s;
+    box-shadow: 0px 0px 10px red;
   }
 
   @media screen and (max-width: 600px) {
@@ -130,9 +147,68 @@
     #desc,
     #icon,
     #dtl {
-      font-size: 15px;
+      font-size: 12px;
+
     }
+
+    #txt {
+      width: 200px;
+      background-color: #343A40;
+    }
+
+    #cross {
+      position: relative;
+
+      left: -10px;
+      font-size: 10px;
+
+      padding: 7px;
+
+    }
+
+
+
   }
+
+  .row-data {
+    background-color: rgb(227, 227, 255);
+    width: auto;
+  }
+
+  .row-data:hover {
+    transition: .5s;
+    background-color: rgb(179, 179, 255);
+    box-shadow: 0px 0px 10px #343A40;
+
+  }
+
+  #dtl {
+    color: #343A40;
+
+  }
+
+  #d {
+    color: rgb(58, 12, 4);
+
+  }
+
+  #d:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  #d:active {
+    text-decoration: none;
+    
+  }
+ #myChart{
+  position: relative;
+  margin: auto;
+  height: 80vh;
+  width: 80vw;
+ }
+
+  
 </style>
 
 <body>
@@ -171,33 +247,83 @@
     </form>
   </div>
 
-  <div class="container-fluid ">
-    <div class="row">
-      <div class="col-sm-8 ">
-        <div class="row ">
-          <div class="col-3 data cnt" id="name">Khanna</div>
+  <div class="container ">
+    <div class="row  ">
+      <div class="col-sm ">
+        <div class="row row-data mt-1">
+          <div class="col-4  " id="name">Vishakhapatnam</div>
           <!--Name-->
-          <div class="col-2 data cnt" id="temp">32C</div>
+          <div class="col-1  " id="temp">32 C</div>
           <!--temprature-->
-          <div class="col-3 data cnt" id="desc">Clear Sky</div>
+          <div class="col-2  " id="desc">Clear Sky</div>
           <!--Description-->
-          <div class="col-2 data cnt" id="icon">
-            <img class="img-fluid" width="50px" height="50px" src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+          <div class="col-2  " id="icon">
+            <img class="img-fluid " width="50px" height="50px" src="https://openweathermap.org/img/wn/01d@2x.png"
+              alt="">
           </div>
           <!--icon-->
-          <div class="col-2 data cnt" id="dtl">details</div>
+          <div class="col-2  " id="dtl">
+            <a id="d" data-toggle="collapse" data-target="#demo">Hide Details</a>
+          </div>
+          <div class="col-1 ">
+            <form action="#"><button class="btn" id="cross">&#10007</button> </form>
+
+          </div>
           <!--View Details-->
         </div>
-   
+
+        <!--View Details-->
       </div>
-      
+    </div>
+    <div class="row">
+      <div id="demo" class="collapse show col-12">
+        <div class="container" style="border:rgb(179, 179, 255) groove 1px ;" >
+          <canvas  id="myChart"></canvas>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+          <script>
 
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'black'],
+                datasets: [{
+                  label: '# of Votes',
+                  data: [12, 19, 3, 5, 2, 3, 7],
+                  backgroundColor: [
+                    'rgb(227, 227, 255)'
 
-      <div class="col-sm-4">
+                  ],
+                  borderColor: [
+                  'rgb(179, 179, 255)',
+                                    ],
+                  borderWidth: 5
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
+              }
+            });
 
+          </script>
+        </div>
       </div>
 
     </div>
+
+
+
+
+
+  </div>
+
+  </div>
 
   </div>
 
@@ -216,5 +342,7 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 </body>
+<style>
 
+</style>
 </html>
